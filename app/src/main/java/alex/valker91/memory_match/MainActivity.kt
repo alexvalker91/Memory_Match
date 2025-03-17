@@ -1,5 +1,10 @@
 package alex.valker91.memory_match
 
+import alex.valker91.memory_match.model.Game
+import alex.valker91.memory_match.navigation.NavRoutes
+import alex.valker91.memory_match.screen.EndGameScreen
+import alex.valker91.memory_match.screen.GameMenuScreen
+import alex.valker91.memory_match.screen.GameScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +17,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.remember
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.gson.Gson
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,11 +34,35 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Memory_MatchTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val navController = rememberNavController()
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background))
+                {
+                    NavHost(navController, startDestination = NavRoutes.GameMenu.route) {
+                        composable(NavRoutes.GameMenu.route) { GameMenuScreen(navController) }
+                        composable(NavRoutes.Game.route + "/{gameJson}",
+                            arguments = listOf(
+                                navArgument("gameJson") { type = NavType.StringType }
+                            )
+                        ) { backStackEntry ->
+                            val gameJson = backStackEntry.arguments?.getString("gameJson")
+                            val game = Gson().fromJson(gameJson, Game::class.java)
+                            GameScreen(navController, game)
+                        }
+                        composable(NavRoutes.EndGame.route + "/{gameJson}" + "/{numberOfAddingCoins}",
+                            arguments = listOf(
+                                navArgument("gameJson") { type = NavType.StringType },
+                                navArgument("numberOfAddingCoins") { type = NavType.IntType }
+                            )
+                        ) { backStackEntry ->
+                            val gameJson = backStackEntry.arguments?.getString("gameJson")
+                            val game = Gson().fromJson(gameJson, Game::class.java)
+                            val numberOfAddingCoins = backStackEntry.arguments?.getInt("numberOfAddingCoins") ?: 0
+                            EndGameScreen(navController, game, numberOfAddingCoins)
+                        }
+                    }
                 }
             }
         }

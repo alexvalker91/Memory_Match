@@ -1,53 +1,53 @@
 package alex.valker91.memory_match.screen
 
+import alex.valker91.memory_match.composable.GameCard
+import alex.valker91.memory_match.composable.PlayButton
 import alex.valker91.memory_match.composable.ScreenPreview
 import alex.valker91.memory_match.model.Game
+import alex.valker91.memory_match.navigation.NavRoutes
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
-import android.util.Log
-import androidx.activity.compose.BackHandler
+import android.os.Bundle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.gson.Gson
 
 @Composable
-fun EndGameScreen(navController: NavController, game: Game, numberOfAddingCoins: Int) {
-    Log.d("dfsdfsdf"," dazfsdfsdf ${game.gameNumber} sadfadf ${game.numberOfCoins}")
-    Log.d("dfsdfsdf"," dazfsdfsdf ${numberOfAddingCoins} sadfadf ${numberOfAddingCoins}")
-    BackHandler {
-        navController.navigate("gameMenu") {
-            // Очистка стека навигации до gameMenu
-            popUpTo("gameMenu") { inclusive = true }
-        }
-    }
+fun GameMenuScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "Hello"
-        )
-        Text(
-            text = "Hello"
-        )
+        GameCard()
+        Spacer(modifier = Modifier.height(16.dp))
+        PlayButton()
         Button(
             onClick = {
-                navController.navigate("gameMenu")
+                val game = Game(3, 33)
+                val gameJson = Gson().toJson(game)
+                navController.navigate(NavRoutes.Game.route + "/${gameJson}")
+//                navController.navigate(NavRoutes.Game.route + "?gameArg=gameArg")
+//                val game = Game(3, 33)
+//                navController.navigate("game?gameArg=${game}")
             }
         ) {
             Text(
-                text = "Home",
-                color = MaterialTheme.colorScheme.onPrimary // Цвет текста
+                text = "Navigate",
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
@@ -55,10 +55,9 @@ fun EndGameScreen(navController: NavController, game: Game, numberOfAddingCoins:
 
 @ScreenPreview
 @Composable
-private fun EndGameScreenPreview() {
+private fun MenuScreenPreview() {
     Memory_MatchTheme {
         val mockNavController = rememberNavController()
-        val game = Game(0, 0)
-        EndGameScreen(mockNavController, game, 99)
+        GameMenuScreen(mockNavController)
     }
 }
