@@ -30,29 +30,38 @@ class GameViewModel @Inject constructor() : ViewModel() {
     private val _effect = MutableSharedFlow<GameEffect>()
     val effect: SharedFlow<GameEffect> = _effect.asSharedFlow()
 
-    init {
-        changeState()
-    }
+//    init {
+//        changeState()
+//    }
 
     fun onEvent(event: GameEvent) {
         when (event) {
-            GameEvent.ClickOnNavigateEndButton -> handlePlayButtonClick()
+            is GameEvent.ClickOnNavigateEndButton -> {
+                handlePlayButtonClick()
+            }
+            is GameEvent.InitializeGame -> {
+                initializeGame(event.game)
+            }
         }
+    }
+
+    private fun initializeGame(game: Game) {
+        _state.value = GameState.Ready(game)
     }
 
     private fun handlePlayButtonClick() {
         viewModelScope.launch {
             // Создаем объект Cat (например, из данных состояния или локально)
-            val game = Game(gameNumber = 3, numberOfCoins = 33)
+            val game = Game(gameNumber = 1, numberOfCoins = 10)
             _effect.emit(GameEffect.NavigateToGameScreen(game, 50))
         }
     }
 
-    private fun changeState() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _state.value = GameState.Loading
-            delay(2_000)
-            _state.value = GameState.Ready
-        }
-    }
+//    private fun changeState() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            _state.value = GameState.Loading
+//            delay(2_000)
+//            _state.value = GameState.Ready
+//        }
+//    }
 }

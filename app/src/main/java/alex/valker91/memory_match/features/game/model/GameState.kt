@@ -1,7 +1,11 @@
 package alex.valker91.memory_match.features.game.model
 
+import alex.valker91.memory_match.model.Game
+
 sealed interface GameState {
     data object Loading : GameState
-    data object Ready : GameState
+    data class Ready(
+        val game: Game = Game(0, 0)
+    ) : GameState
     data class Error(val message: String) : GameState
 }
