@@ -3,15 +3,13 @@ package alex.valker91.memory_match
 import alex.valker91.memory_match.model.Game
 import alex.valker91.memory_match.navigation.NavRoutes
 import alex.valker91.memory_match.screen.EndGameScreen
-import alex.valker91.memory_match.screen.GameMenuScreen
-import alex.valker91.memory_match.screen.GameScreen
+import alex.valker91.memory_match.features.menu.ui.GameMenuScreen
+import alex.valker91.memory_match.features.game.ui.GameScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,14 +18,15 @@ import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.remember
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

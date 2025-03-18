@@ -60,10 +60,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.androidx.compose.navigation)
+    implementation(libs.hilt.compose.navigation)
 
     implementation(libs.datastore)
 
     implementation(libs.hilt.android)
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.gson)
     kapt(libs.hilt.compiler)
 }

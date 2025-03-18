@@ -1,6 +1,7 @@
 package alex.valker91.memory_match.composable
 
 import alex.valker91.memory_match.R
+import alex.valker91.memory_match.model.Game
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +28,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun GameCard() {
+fun GameCard(game: Game) {
     ElevatedCard(
         modifier = Modifier.size(250.dp),
         colors = CardDefaults.cardColors(
@@ -54,13 +55,13 @@ fun GameCard() {
 
             // Текст
             Text(
-                text = "Game",
+                text = "Game ${game.gameNumber}",
                 fontSize = 24.sp, // Размер шрифта
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(8.dp) // Отступы вокруг текста
             )
             Text(
-                text = "Coin",
+                text = "Coin ${game.numberOfCoins}",
                 fontSize = 24.sp, // Размер шрифта
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(8.dp) // Отступы вокруг текста
@@ -73,8 +74,9 @@ fun GameCard() {
 @Composable
 fun GameCardPreview() {
     Memory_MatchTheme {
+        val game: Game = Game(1, 123)
         Column(Modifier.padding(16.dp)) {
-            GameCard()
+            GameCard(game)
         }
     }
 }
