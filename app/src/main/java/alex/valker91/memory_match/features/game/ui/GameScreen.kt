@@ -3,6 +3,8 @@ package alex.valker91.memory_match.features.game.ui
 import alex.valker91.memory_match.composable.ButtonScreen
 import alex.valker91.memory_match.composable.ScreenPreview
 import alex.valker91.memory_match.composable.TextView
+import alex.valker91.memory_match.features.game.vm.GameViewModel
+import alex.valker91.memory_match.features.menu.vm.MenuViewModel
 import alex.valker91.memory_match.model.Game
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
 import android.util.Log
@@ -21,15 +23,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
 
 @Composable
-fun GameScreen(navController: NavController, game: Game) {
-    Log.d("dfgsdffsd"," dazfsdfsdf ${game.gameNumber} sadfadf ${game.numberOfCoins}")
+fun GameScreen(
+    navController: NavController,
+    game: Game,
+    viewModel: GameViewModel = hiltViewModel()
+) {
+    Log.d("dfgsdffsd", " dazfsdfsdf ${game.gameNumber} sadfadf ${game.numberOfCoins}")
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -49,7 +58,7 @@ fun GameScreen(navController: NavController, game: Game) {
                 val game = Game(3, 33)
                 val gameJson = Gson().toJson(game)
                 val numberOfAddingCoins = 99
-                    navController.navigate("endGame" + "/${gameJson}" + "/${numberOfAddingCoins}")
+                navController.navigate("endGame" + "/${gameJson}" + "/${numberOfAddingCoins}")
             }
         ) {
             Text(
