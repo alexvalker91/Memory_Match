@@ -29,12 +29,14 @@ class MenuViewModel @Inject constructor() : ViewModel() {
     val effect: SharedFlow<MenuEffect> = _effect.asSharedFlow()
 
     init {
-        getDataFromSharedPreference()
+//        getDataFromSharedPreference()
+        onEvent(MainEvent.InitializeGame)
     }
 
     fun onEvent(event: MainEvent) {
         when (event) {
             MainEvent.ClickOnPlayButton -> handlePlayButtonClick()
+            MainEvent.InitializeGame -> initializeGame()
         }
     }
 
@@ -66,7 +68,7 @@ class MenuViewModel @Inject constructor() : ViewModel() {
 //        }
     }
 
-    private fun getDataFromSharedPreference() {
+    private fun initializeGame() {
         viewModelScope.launch(Dispatchers.IO) {
             val game: Game = Game(3, 33123)
             _state.value = MenuState.Ready(gameLevel = game.gameNumber, countOfCoins = game.numberOfCoins)

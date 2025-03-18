@@ -38,11 +38,12 @@ fun GameMenuScreen(
     navController: NavController,
     viewModel: MenuViewModel = hiltViewModel()
 ) {
+    Log.d("Logdfgdfgdfs1gCa1t", "INIT SCREEN")
     val viewState by viewModel.state.collectAsStateWithLifecycle()
 //    val effect by viewModel.effect.collectAsStateWithLifecycle()
 
     LaunchedEffect(viewState){
-        Log.d("LogCat", "OperatorDepositScreen STATE: $viewState")
+        Log.d("Logdfgdfgdfs1gCa1t", "OperatorDepositScreen STATE: $viewState")
     }
 //    LaunchedEffect(effect){
 //        Log.d("LogCat", "OperatorDepositScreen effect: $effect")
