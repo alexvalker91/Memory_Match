@@ -7,10 +7,6 @@ import alex.valker91.memory_match.features.game.model.GameEffect
 import alex.valker91.memory_match.features.game.model.GameEvent
 import alex.valker91.memory_match.features.game.model.GameState
 import alex.valker91.memory_match.features.game.vm.GameViewModel
-import alex.valker91.memory_match.features.menu.model.MenuEffect
-import alex.valker91.memory_match.features.menu.model.MenuEvent
-import alex.valker91.memory_match.features.menu.model.MenuState
-import alex.valker91.memory_match.features.menu.vm.MenuViewModel
 import alex.valker91.memory_match.model.Game
 import alex.valker91.memory_match.navigation.NavRoutes
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
@@ -89,10 +85,6 @@ fun GameScreen(
                 Button(
                     onClick = {
                         viewModel.onEvent(GameEvent.ClickOnNavigateEndButton)
-//                        val game = Game(3, 33)
-//                        val gameJson = Gson().toJson(game)
-//                        val numberOfAddingCoins = 99
-//                        navController.navigate("endGame" + "/${gameJson}" + "/${numberOfAddingCoins}")
                     }
                 ) {
                     Text(

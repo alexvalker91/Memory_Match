@@ -3,8 +3,6 @@ package alex.valker91.memory_match.features.game.vm
 import alex.valker91.memory_match.features.game.model.GameEffect
 import alex.valker91.memory_match.features.game.model.GameEvent
 import alex.valker91.memory_match.features.game.model.GameState
-import alex.valker91.memory_match.features.menu.model.MenuEffect
-import alex.valker91.memory_match.features.menu.model.MenuState
 import alex.valker91.memory_match.model.Game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

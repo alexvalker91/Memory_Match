@@ -27,7 +27,6 @@ class MenuViewModel @Inject constructor() : ViewModel() {
     val effect: SharedFlow<MenuEffect> = _effect.asSharedFlow()
 
     init {
-//        getDataFromSharedPreference()
         onEvent(MenuEvent.InitializeGame)
     }
 

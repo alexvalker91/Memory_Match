@@ -3,7 +3,6 @@ package alex.valker91.memory_match.features.end.ui
 import alex.valker91.memory_match.composable.ScreenPreview
 import alex.valker91.memory_match.model.Game
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,11 +20,8 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun EndGameScreen(navController: NavController, game: Game, numberOfAddingCoins: Int) {
-    Log.d("dfsd7fs8df"," dazfsdfsdf ${game.gameNumber} sadfadf ${game.numberOfCoins}")
-    Log.d("dfsd7fs8df"," dazfsdfsdf ${numberOfAddingCoins} sadfadf ${numberOfAddingCoins}")
     BackHandler {
         navController.navigate("gameMenu") {
-            // Очистка стека навигации до gameMenu
             popUpTo("gameMenu") { inclusive = true }
         }
     }
