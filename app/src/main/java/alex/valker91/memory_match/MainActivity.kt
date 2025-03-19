@@ -2,7 +2,7 @@ package alex.valker91.memory_match
 
 import alex.valker91.memory_match.model.Game
 import alex.valker91.memory_match.navigation.NavRoutes
-import alex.valker91.memory_match.screen.EndGameScreen
+import alex.valker91.memory_match.features.end.ui.EndGameScreen
 import alex.valker91.memory_match.features.menu.ui.GameMenuScreen
 import alex.valker91.memory_match.features.game.ui.GameScreen
 import android.os.Bundle

@@ -1,6 +1,5 @@
 package alex.valker91.memory_match.features.game.model
 
-import alex.valker91.memory_match.features.menu.model.MainEvent
 import alex.valker91.memory_match.model.Game
 
 sealed interface GameEvent {

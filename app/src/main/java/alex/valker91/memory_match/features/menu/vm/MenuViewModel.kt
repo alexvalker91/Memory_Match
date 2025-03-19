@@ -1,13 +1,11 @@
 package alex.valker91.memory_match.features.menu.vm
 
-import alex.valker91.memory_match.features.menu.model.MainEvent
+import alex.valker91.memory_match.features.menu.model.MenuEvent
 import alex.valker91.memory_match.features.menu.model.MenuEffect
 import alex.valker91.memory_match.features.menu.model.MenuState
 import alex.valker91.memory_match.model.Game
-import alex.valker91.memory_match.navigation.NavRoutes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,18 +28,17 @@ class MenuViewModel @Inject constructor() : ViewModel() {
 
     init {
 //        getDataFromSharedPreference()
-        onEvent(MainEvent.InitializeGame)
+        onEvent(MenuEvent.InitializeGame)
     }
 
-    fun onEvent(event: MainEvent) {
+    fun onEvent(event: MenuEvent) {
         when (event) {
-            MainEvent.ClickOnPlayButton -> handlePlayButtonClick()
-            MainEvent.InitializeGame -> initializeGame()
+            MenuEvent.ClickOnPlayButton -> handlePlayButtonClick()
+            MenuEvent.InitializeGame -> initializeGame()
         }
     }
 
     private fun handlePlayButtonClick() {
-//        viewModelScope.launch {
             when (val currentState = _state.value) {
                 is MenuState.Ready -> {
                     val game = Game(
@@ -49,28 +46,19 @@ class MenuViewModel @Inject constructor() : ViewModel() {
                         numberOfCoins = currentState.countOfCoins
                     )
                     viewModelScope.launch {
-//                        _effect.emit(MenuEffect.ShowToast("Game ${game.gameNumber} started!"))
                         _effect.emit(MenuEffect.NavigateToGameScreen(game))
                     }
-                    // Берем game из текущего состояния
-//                    _effect.emit(MenuEffect.NavigateToGameScreen(Game(currentState.gameLevel, currentState.countOfCoins)))
                 }
                 is MenuState.Loading -> {
-                    // Можно показать загрузку или проигнорировать нажатие
                 }
                 is MenuState.Error -> {
-//                    _effect.emit(MenuEffect.ShowToast)
                 }
             }
-//        }
-//        viewModelScope.launch {
-//            _effect.emit(MenuEffect.NavigateToGameScreen(game))
-//        }
     }
 
     private fun initializeGame() {
         viewModelScope.launch(Dispatchers.IO) {
-            val game: Game = Game(3, 33123)
+            val game: Game = Game(77, 7654321)
             _state.value = MenuState.Ready(gameLevel = game.gameNumber, countOfCoins = game.numberOfCoins)
         }
     }

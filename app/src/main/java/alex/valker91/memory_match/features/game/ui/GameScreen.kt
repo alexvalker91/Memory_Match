@@ -3,9 +3,16 @@ package alex.valker91.memory_match.features.game.ui
 import alex.valker91.memory_match.composable.ButtonScreen
 import alex.valker91.memory_match.composable.ScreenPreview
 import alex.valker91.memory_match.composable.TextView
+import alex.valker91.memory_match.features.game.model.GameEffect
+import alex.valker91.memory_match.features.game.model.GameEvent
+import alex.valker91.memory_match.features.game.model.GameState
 import alex.valker91.memory_match.features.game.vm.GameViewModel
+import alex.valker91.memory_match.features.menu.model.MenuEffect
+import alex.valker91.memory_match.features.menu.model.MenuEvent
+import alex.valker91.memory_match.features.menu.model.MenuState
 import alex.valker91.memory_match.features.menu.vm.MenuViewModel
 import alex.valker91.memory_match.model.Game
+import alex.valker91.memory_match.navigation.NavRoutes
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -20,10 +27,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.gson.Gson
@@ -34,37 +44,63 @@ fun GameScreen(
     game: Game,
     viewModel: GameViewModel = hiltViewModel()
 ) {
-    Log.d("dfgsdffsd", " dazfsdfsdf ${game.gameNumber} sadfadf ${game.numberOfCoins}")
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextView()
-            TextView()
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-        ButtonScreen()
-        Button(
-            onClick = {
-                val game = Game(3, 33)
-                val gameJson = Gson().toJson(game)
-                val numberOfAddingCoins = 99
-                navController.navigate("endGame" + "/${gameJson}" + "/${numberOfAddingCoins}")
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(viewState) {
+        Log.d("Logdfgdfgdfs1gCa1t", "OperatorDepositScreen STATE: $viewState")
+    }
+
+    LaunchedEffect(game) {
+        viewModel.onEvent(GameEvent.InitializeGame(game)) // Отправляем событие для инициализации
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is GameEffect.NavigateToGameScreen -> {
+                    val gameJson = Gson().toJson(effect.game)
+                    navController.navigate(NavRoutes.EndGame.route + "/${gameJson}" + "/${effect.addingCoins}")
+                }
             }
-        ) {
-            Text(
-                text = "Navigate",
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+        }
+    }
+
+    when (val state = viewState) {
+        is GameState.Error -> {}
+        GameState.Loading -> {}
+        is GameState.Ready -> {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextView()
+                    TextView()
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+                ButtonScreen()
+                Button(
+                    onClick = {
+                        viewModel.onEvent(GameEvent.ClickOnNavigateEndButton)
+//                        val game = Game(3, 33)
+//                        val gameJson = Gson().toJson(game)
+//                        val numberOfAddingCoins = 99
+//                        navController.navigate("endGame" + "/${gameJson}" + "/${numberOfAddingCoins}")
+                    }
+                ) {
+                    Text(
+                        text = "Navigate",
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
         }
     }
 }
