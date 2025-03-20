@@ -40,9 +40,9 @@ fun PlayButton() {
 }
 
 @Composable
-fun TextView() {
+fun TextView(text: String) {
     Text(
-        text = "Hello", // Текст внутри
+        text = text, // Текст внутри
         fontSize = 16.sp, // Размер шрифта
         color = MaterialTheme.colorScheme.onPrimary, // Цвет текста
         textAlign = TextAlign.Center, // Выравнивание текста по центру
@@ -66,7 +66,7 @@ fun PlayButtonPreview() {
     Memory_MatchTheme {
         Column(Modifier.padding(16.dp)) {
             PlayButton()
-            TextView()
+            TextView("SomeText")
         }
     }
 }

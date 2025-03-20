@@ -10,6 +10,7 @@ import alex.valker91.memory_match.features.game.vm.GameViewModel
 import alex.valker91.memory_match.model.Game
 import alex.valker91.memory_match.navigation.NavRoutes
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
+import alex.valker91.memory_match.util.displayTime
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -78,8 +79,8 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextView()
-                    TextView()
+                    TextView(state.gameStopWatch.currentSec.displayTime())
+                    TextView(state.gameStopWatch.currentCoin.toString())
                 }
                 Spacer(modifier = Modifier.height(24.dp))
                 ButtonScreen()
