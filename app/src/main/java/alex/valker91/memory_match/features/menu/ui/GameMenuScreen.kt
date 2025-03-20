@@ -61,6 +61,7 @@ fun GameMenuScreen(
         MenuState.Loading -> {}
         is MenuState.Ready -> {
             val game: Game = Game(state.gameLevel, state.countOfCoins)
+            Log.d("Kurami", "MenuGame: number${game.gameNumber} coins:${game.numberOfCoins}")
             Column(
                 modifier = Modifier
                     .fillMaxSize()

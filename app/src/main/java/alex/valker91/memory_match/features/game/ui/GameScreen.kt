@@ -64,6 +64,7 @@ fun GameScreen(
         is GameState.Error -> {}
         GameState.Loading -> {}
         is GameState.Ready -> {
+            Log.d("Kurami", "Game: number${state.game.gameNumber} coins:${state.game.numberOfCoins}")
             Column(
                 modifier = Modifier
                     .fillMaxSize()

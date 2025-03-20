@@ -74,6 +74,7 @@ fun EndGameScreen(navController: NavController, game: Game, numberOfAddingCoins:
         is EndGameState.Error -> {}
         is EndGameState.Loading -> {}
         is EndGameState.Ready -> {
+            Log.d("Kurami", "EndGame: number${state.game.gameNumber} coins:${state.game.numberOfCoins}")
             Column(
                 modifier = Modifier.fillMaxSize().padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
