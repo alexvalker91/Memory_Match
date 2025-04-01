@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ButtonScreen() {
+    var currentId = 0 // Начальный ID
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -28,7 +30,8 @@ fun ButtonScreen() {
                 horizontalArrangement = Arrangement.SpaceEvenly // Отступы между кнопками
             ) {
                 repeat(4) { columnIndex -> // 4 кнопки в каждой строке
-                    RoundedButton()
+                    RoundedButton(currentId) // Передаём текущий ID кнопки
+                    currentId++ // Увеличиваем ID на 1
                 }
             }
         }
