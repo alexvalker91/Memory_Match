@@ -6,6 +6,7 @@ import alex.valker91.memory_match.features.game.model.GameState
 import alex.valker91.memory_match.features.game.model.GameStopWatch
 import alex.valker91.memory_match.model.Game
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -108,21 +109,47 @@ class GameViewModel @Inject constructor() : ViewModel() {
         cancelPreviousJob()
         increaseClickCount()
 
+        var flipJob: Job? = null
+
+        when (val currentState = _state.value) {
+            is GameState.Ready -> {
+                val cards = currentState.cards
+                if(cards[id].isBackDisplayed) {
+                    flipJob = viewModelScope.launch(Dispatchers.IO) {
+                        flip(id)
+                    }
+                }
+            }
+            is GameState.Loading -> {
+            }
+            is GameState.Error -> {
+            }
+        }
+
         when (val currentState = _state.value) {
             is GameState.Ready -> {
                 val cards = currentState.cards
                 if(cards[id].isBackDisplayed){
                     delayedCompareJob = viewModelScope.launch (Dispatchers.IO) {
-                        flip(id)
-                        val firstIndex = currentState.card1
-                        val secondIndex = currentState.card2
-                        val bothCardsAreNotNull = firstIndex != null && secondIndex != null
-                        val cardsMatchSkipDelay = if(bothCardsAreNotNull) cards[firstIndex!!].value == cards[secondIndex!!].value
-                        else false
-                        if(!cardsMatchSkipDelay){
-                            delay(2000)
+                        flipJob?.join()
+//                        flip(id)
+                        when (val currentState = _state.value) {
+                            is GameState.Ready -> {
+                                Log.d("LogCat12345", "AAAAAA ${currentState.card1} + ${currentState.card2}")
+                                val firstIndex = currentState.card1
+                                val secondIndex = currentState.card2
+                                val bothCardsAreNotNull = firstIndex != null && secondIndex != null
+                                val cardsMatchSkipDelay = if(bothCardsAreNotNull) cards[firstIndex!!].value == cards[secondIndex!!].value
+                                else false
+                                if(!cardsMatchSkipDelay){
+                                    delay(2000)
+                                }
+                                compareValues(firstIndex, secondIndex)
+                            }
+                            else ->{}
                         }
-                        compareValues(firstIndex, secondIndex)
+
+
                     }
                 }
             }
@@ -154,11 +181,14 @@ class GameViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun cancelPreviousJob(){
+        Log.d("LogCat123", "fun cancelPreviousJob")
         when (val currentState = _state.value) {
             is GameState.Ready -> {
+                Log.d("LogCat123", "fun cancelPreviousJob Ready")
                 val firstIndex = currentState.card1
                 val secondIndex = currentState.card2
                 if(delayedCompareJob != null){
+                    Log.d("LogCat123", "fun cancelPreviousJob Ready delayedCompareJob != null")
                     delayedCompareJob?.cancel()
                     compareValues(firstIndex, secondIndex)
                 }
@@ -185,6 +215,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun compareValues(first: Int?, second: Int?) {
+        Log.d("LogCat123","first:$first second:$second")
         when (val currentState = _state.value) {
             is GameState.Ready -> {
                 val cards = currentState.cards.copyOf()
