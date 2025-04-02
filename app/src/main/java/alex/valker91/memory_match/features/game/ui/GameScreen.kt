@@ -83,7 +83,12 @@ fun GameScreen(
                     TextView(state.gameStopWatch.currentCoin.toString())
                 }
                 Spacer(modifier = Modifier.height(24.dp))
-                ButtonScreen()
+                ButtonScreen(
+                    cards = state.cards,
+                    onCardClick = { cardId -> // Обработчик клика
+                        viewModel.onEvent(GameEvent.ClickOnCard(cardId = cardId))
+                    }
+                )
                 Button(
                     onClick = {
                         viewModel.onEvent(GameEvent.ClickOnNavigateEndButton)

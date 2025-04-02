@@ -1,21 +1,21 @@
 package alex.valker91.memory_match.composable
 
-import alex.valker91.memory_match.Greeting
+import alex.valker91.memory_match.features.game.model.MemoryCard
 import alex.valker91.memory_match.ui.theme.Memory_MatchTheme
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ButtonScreen() {
+fun ButtonScreen(
+    cards: Array<MemoryCard>, onCardClick: (Int) -> Unit
+) {
     var currentId = 0 // Начальный ID
 
     Column(
@@ -30,8 +30,21 @@ fun ButtonScreen() {
                 horizontalArrangement = Arrangement.SpaceEvenly // Отступы между кнопками
             ) {
                 repeat(4) { columnIndex -> // 4 кнопки в каждой строке
-                    RoundedButton(currentId) // Передаём текущий ID кнопки
-                    currentId++ // Увеличиваем ID на 1
+
+
+                    Log.d("sdfsd5fds6f", "rowIndex: $rowIndex + columnIndex: $columnIndex ")
+//                    val currentId = rowIndex  * 4 + columnIndex  // Уникальный ID кнопки
+                    Log.d("sdfsd5fds6f", "currentId: $currentId")
+                    val cardState = cards[currentId] // Получаем состояние карты по ID
+
+
+                    RoundedButton(
+                        id = currentId,
+                        isBackDisplayed = cardState.isBackDisplayed,
+                        cardValue = cardState.value,
+                        onClick = onCardClick // Передаём обработчик клика
+                        )
+                    currentId++
                 }
             }
         }
@@ -42,6 +55,6 @@ fun ButtonScreen() {
 @Composable
 private fun ButtonScreenPreview() {
     Memory_MatchTheme {
-        ButtonScreen()
+        ButtonScreen(cards = emptyArray(), onCardClick = {})
     }
 }
