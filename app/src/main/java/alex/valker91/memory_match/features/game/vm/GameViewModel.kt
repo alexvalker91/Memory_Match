@@ -132,7 +132,6 @@ class GameViewModel @Inject constructor() : ViewModel() {
                 if(cards[id].isBackDisplayed){
                     delayedCompareJob = viewModelScope.launch (Dispatchers.IO) {
                         flipJob?.join()
-//                        flip(id)
                         when (val currentState = _state.value) {
                             is GameState.Ready -> {
                                 Log.d("LogCat12345", "AAAAAA ${currentState.card1} + ${currentState.card2}")
@@ -225,6 +224,9 @@ class GameViewModel @Inject constructor() : ViewModel() {
                     if(card1.value != card2.value){
                         cards[first].flipCard()
                         cards[second].flipCard()
+                        _state.value = currentState.copy(
+                            cards = cards
+                        )
                     }else{
                         cards[first].matchFound = true
                         cards[second].matchFound = true
