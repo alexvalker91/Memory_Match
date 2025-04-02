@@ -83,11 +83,9 @@ class GameViewModel @Inject constructor() : ViewModel() {
         if (sec < 61) {
             return 100
         }
-        print("QQQQQQQ"+(sec> 60)+"  "+(coin > 10))
         if ((sec > 60) and (coin > 10)) {
             return coin - 5
         }
-
         return 10
     }
 
@@ -138,6 +136,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
     private fun flip(id: Int) {
         when (val currentState = _state.value) {
             is GameState.Ready -> {
+
                 val cards = currentState.cards.copyOf()
                 cards[id].flipCard()
                 val card2 = currentState.card1
@@ -188,12 +187,10 @@ class GameViewModel @Inject constructor() : ViewModel() {
     private fun compareValues(first: Int?, second: Int?) {
         when (val currentState = _state.value) {
             is GameState.Ready -> {
-
-                val cards = currentState.cards
+                val cards = currentState.cards.copyOf()
                 if(second != null && first != null){
                     val card1 = cards[first]
                     val card2 = cards[second]
-
                     if(card1.value != card2.value){
                         cards[first].flipCard()
                         cards[second].flipCard()
@@ -206,31 +203,12 @@ class GameViewModel @Inject constructor() : ViewModel() {
                         )
                     }
                 }
-
-
             }
             is GameState.Loading -> {
             }
             is GameState.Error -> {
             }
         }
-//        val cards = _state.value.cards.copyOf()
-//        if(second != null && first != null){
-//            val card1 = cards[first]
-//            val card2 = cards[second]
-//
-//            if(card1.value != card2.value){
-//                cards[first].flipCard()
-//                cards[second].flipCard()
-//            }else{
-//                cards[first].matchFound = true
-//                cards[second].matchFound = true
-//                _state.value = _state.value.copy(
-//                    cards = cards,
-//                    pairsMatched = _state.value.pairsMatched + 1
-//                )
-//            }
-//        }
 
         isGuessedAllCards()
         resetCompareCards()
@@ -240,7 +218,7 @@ class GameViewModel @Inject constructor() : ViewModel() {
         when (val currentState = _state.value) {
             is GameState.Ready -> {
                 if (currentState.pairCount == currentState.pairsMatched){
-                    viewModelScope.launch {
+                    viewModelScope.launch (Dispatchers.IO) {
                         val game: Game = currentState.game
                         _effect.emit(GameEffect.NavigateToGameScreen(game, 10))
                     }
